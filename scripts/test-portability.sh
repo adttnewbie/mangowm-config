@@ -5,7 +5,7 @@ failures=0
 
 check_no_pattern() {
   local dir=$1 pattern=$2 label=$3
-  if find "$dir" -type f \( -name '*.sh' -o -name '*.qml' -o -name '*.py' -o -name '*.conf' -o -name '*.toml' -o -name '*.plymouth' \) ! -name 'test-portability.sh' -exec grep -qE "$pattern" {} + 2>/dev/null; then
+  if find "$dir" -type f \( -name '*.sh' -o -name '*.qml' -o -name '*.py' -o -name '*.conf' -o -name '*.toml' -o -name '*.plymouth' \) ! -name 'test-portability.sh' ! -name 'test-no-nix.sh' -exec grep -qE "$pattern" {} + 2>/dev/null; then
     printf 'FAIL: %s: pattern /%s/ found\n' "$label" "$pattern"
     failures=$((failures + 1))
   else

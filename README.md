@@ -1,27 +1,51 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/ilyamiro)
 
-# Big announcement to all of my users! 
-### Starting from 12.05.2026, the version of my dots will remain available for arch on version v1.7.6, since I am working on a very big update - v2.0.0. It will shift the whole paradigm - instead of being invasive into your configs, the shell will actually be a "shell" and be just a quickshell configuration on top of your compositor - that will extend the support onto Niri, MangoWM, and other wayland compositors other than Hyprland. The new update will also make everything much more optimized and efficient and will be out in a span of a month. Thank you!
+# Arch Linux + MangoWM Desktop Configuration
 
+A native Arch Linux + MangoWM desktop configuration inspired by ilyamiro's
+original desktop. This is not a Hyprland fork or compatibility layer — MangoWM
+behavior is the source of truth.
 
-## Do NOT install it on NixOS. This config has a lot adapting to do, until I introduce flakes.
-## Arch installer now available for everyone. Just run this: 
+## Requirements
+
+- Arch Linux (or Arch-based distribution)
+- Wayland session
+- An AUR helper (yay or paru)
+
+## Installation
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ilyamiro/imperative-dots/master/install.sh)"
+git clone https://github.com/ilyamiro/mangowm-config.git
+cd mangowm-config
+./install/install.sh
 ```
 
 > [!WARNING]
 > DO NOT LAUNCH THIS AS ROOT!
 
-> [!NOTE]
-> This installer sends anonymous non-identifying telemetry that helps me debug problems and track the amount of users
+The installer will:
+1. Install required packages from official repos and AUR
+2. Create symlinks for configuration files
+3. Install fonts
+4. Optionally install Plymouth theme (with `--plymouth`)
 
-### You can find all of my wallpapers **[HERE](https://github.com/ilyamiro/shell-wallpapers)**.
+After installation, log out and select "Mango" from your display manager.
 
-## Previews of my desktop
+## Features
 
----
+- **MangoWM** — Tiling Wayland compositor with tag-based workspaces (1-9)
+- **QuickShell** — QML-based panels, popups, and widgets
+- **Matugen** — Material You color generation from wallpapers
+- **swww** — Animated wallpaper daemon
+- **swayidle/swaylock** — Idle management and screen locking
+
+## Documentation
+
+- [Architecture](docs/architecture.md) — Repository layout and ownership
+- [Packages](docs/packages.md) — Package lists and installation
+- [Migration](MIGRATION.md) — Migration status and behavior changes
+
+## Previews
 
 ![preview1](previews/screenshot1.png)
 ![preview2](previews/screenshot2.png)
@@ -34,3 +58,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ilyamiro/imperative-dots
 ![preview9](previews/screenshot9.png)
 ![preview10](previews/screenshot10.png)
 
+## Wallpapers
+
+You can find all wallpapers [here](https://github.com/ilyamiro/shell-wallpapers).
+
+## Troubleshooting
+
+See [docs/troubleshooting.md](docs/troubleshooting.md) for common issues.

@@ -115,8 +115,8 @@ replaced, or explicitly documented as intentionally dropped.
 | 5. Native MangoWM configuration | Complete |
 | 6. Mango compositor service | Complete |
 | 7. QuickShell and portable scripts | Complete |
-| 8. Obsolete Nix and Hyprland removal | Planned |
-| 9. Final validation and maintenance docs | Planned |
+| 8. Obsolete Nix and Hyprland removal | Complete |
+| 9. Final validation and maintenance docs | Complete |
 
 ## Compatibility rules
 
@@ -129,3 +129,96 @@ replaced, or explicitly documented as intentionally dropped.
   package.
 - The final active configuration has no NixOS dependency. Legacy files are
   removed only in the cleanup phase.
+
+## Known limitations
+
+### Startup and portals
+
+- XDG Desktop Portal selection is not configured by this repository. Users must
+  ensure `xdg-desktop-portal-wlr` or another appropriate backend is installed
+  and configured for their environment.
+
+### Monitor identification
+
+- Monitor names and positions are host-specific. Users must edit
+  `~/.config/mango/conf.d/monitors.conf` to match their hardware. Use
+  `wlr-randr` or `wayland-info` to discover monitor names.
+
+### QuickShell
+
+- QuickShell requires `quickshell-git` from AUR. The stable release may not
+  include required features.
+- Some widgets assume specific font families (Inter, JetBrains Mono, Font
+  Awesome). Missing fonts will cause rendering issues.
+
+### Lock and idle
+
+- `swayidle` and `swaylock` are configured for MangoWM. Idle timeouts and lock
+  commands can be adjusted in `~/.config/mango/conf.d/autostart.conf`.
+
+### Wallpapers
+
+- `swww` is the wallpaper daemon. Use `swww img /path/to/image` to change
+  wallpapers, or use the QuickShell wallpaper picker.
+- Matugen generates colors from wallpapers. Run `matugen image /path/to/wallpaper.png`
+  to regenerate the color scheme.
+
+### AUR helper failures
+
+- If AUR package installation fails, check that your AUR helper is up to date
+  and that your system is fully updated (`sudo pacman -Syu`).
+- Some AUR packages may require manual intervention or have build dependencies
+  that need to be installed first.
+
+### Native redesigns
+
+- Workspace navigation uses tags 1-9 only (no workspace 10).
+- `bind` syntax is used for keybindings (not `bindm` for mouse).
+- Mouse bindings use `mousebind` keyword.
+- Workspace commands use `view` and `tag` (not `workspace` and `movetoworkspace`).
+- IPC uses `mmsg` (not `hyprctl`).
+
+## Maintenance procedures
+
+### Running tests
+
+Before committing changes, run the test suite:
+
+```bash
+bash scripts/test-install.sh
+```
+
+This validates:
+- Symlink creation and integrity
+- Mango config syntax
+- Portability (no Hyprland/Nix references in active code)
+- Shell script syntax
+
+### Adding new packages
+
+1. Add official packages to `packages-pacman.txt`
+2. Add AUR packages to `packages-aur.txt`
+3. Update `docs/packages.md` with package description and group
+4. Run `./install/packages.sh` to verify installation
+
+### Updating MangoWM configuration
+
+1. Edit files in `config/sessions/mango/conf.d/`
+2. Test with `mango -c config/sessions/mango/config.conf -p`
+3. Restart Mango session to apply changes
+
+### Updating QuickShell
+
+1. Edit QML files in `quickshell/`
+2. Mango-only changes belong in `quickshell/services/mango/`
+3. Test with `quickshell` (requires running Mango session)
+4. Run `bash scripts/test-portability.sh` to ensure no Hyprland references
+
+### Upstream synchronization
+
+1. Fetch upstream changes: `git fetch upstream`
+2. Review changes before merging: `git diff HEAD upstream/main`
+3. Merge with minimal local edits to upstream-owned paths
+4. Resolve conflicts in Mango-owned paths only
+5. Run `bash scripts/test-install.sh` after resolving
+6. Document behavior changes in this file

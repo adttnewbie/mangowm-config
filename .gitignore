@@ -9,6 +9,4 @@ pkgs/
 commit.txt
 config/programs/eww/hotfile-eww/*
 
-config/sessions/hyprland/scripts/quickshell/quickactions/Todo.qml
-
 config/sessions/mango/conf.d/local.conf

@@ -980,7 +980,7 @@ Item {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: Quickshell.execDetached(["xdg-open", "https://github.com/ilyamiro/nixos-configuration"]) 
+                            onClicked: Quickshell.execDetached(["xdg-open", "https://github.com/ilyamiro/mangowm-config"]) 
                         }
                     }
 
@@ -1543,7 +1543,7 @@ Item {
 
                     Repeater {
                         model: [
-                            { name: "NixOS Config", icon: "", color: "blue", url: "https://github.com/ilyamiro/nixos-configuration" },
+                            { name: "Mango Config", icon: "", color: "blue", url: "https://github.com/ilyamiro/mangowm-config" },
                             { name: "Imperative Dots", icon: "󰣇", color: "mauve", url: "https://github.com/ilyamiro/imperative-dots" },
                             { name: "Wallpapers", icon: "", color: "peach", url: "https://github.com/ilyamiro/shell-wallpapers" }
                         ]
