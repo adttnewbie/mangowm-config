@@ -104,6 +104,20 @@ replaced, or explicitly documented as intentionally dropped.
 | Nix-based `stsetup` project helper | removed; it depends on a project-specific Nix shell | Planned |
 | NixOS Fastfetch logo | Arch Linux logo | Planned |
 
+## Implementation status
+
+| Phase | Status |
+| --- | --- |
+| 1. Documentation and audit | Complete |
+| 2. Mango-owned skeleton | Complete |
+| 3. Canonical package manifests | Planned |
+| 4. Safe installation scripts | Planned |
+| 5. Native MangoWM configuration | Planned |
+| 6. Mango compositor service | Planned |
+| 7. QuickShell and portable scripts | Planned |
+| 8. Obsolete Nix and Hyprland removal | Planned |
+| 9. Final validation and maintenance docs | Planned |
+
 ## Compatibility rules
 
 - `config/programs/` and unchanged application config filenames remain close to

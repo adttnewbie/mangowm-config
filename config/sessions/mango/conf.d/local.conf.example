@@ -1,0 +1,5 @@
+# Local MangoWM overrides
+# Copy this file to local.conf and edit as needed.
+# local.conf is git-ignored and loaded last if present.
+
+# monitorrule=name:^HDMI-A-1$,width:2560,height:1440,refresh:165,x:1920,y:0,scale:1
