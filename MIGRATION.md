@@ -110,7 +110,7 @@ replaced, or explicitly documented as intentionally dropped.
 | --- | --- |
 | 1. Documentation and audit | Complete |
 | 2. Mango-owned skeleton | Complete |
-| 3. Canonical package manifests | Planned |
+| 3. Canonical package manifests | Complete |
 | 4. Safe installation scripts | Planned |
 | 5. Native MangoWM configuration | Planned |
 | 6. Mango compositor service | Planned |
