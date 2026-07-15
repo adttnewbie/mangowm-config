@@ -1,4 +1,5 @@
 pkgs/
+.worktrees/
 
 .env
 .env.*
