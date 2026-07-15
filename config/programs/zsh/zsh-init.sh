@@ -125,7 +125,7 @@ function fetch() {
 {
   "\$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
   "logo": {
-    "source": "nixos_small",
+    "source": "arch_small",
     "color": {
       "1": "$c_blue",
       "2": "$c_sapphire"
@@ -191,25 +191,6 @@ pasteimg() {
     local name="${1:-clipboard.png}"
     [[ "$name" != *.png ]] && name="$name.png"
     wl-paste --type image/png | sudo tee "$name" > /dev/null
-}
-
-stsetup() {
-    local proj_dir="$HOME/Projects/stewart-new"
-    
-    if [[ ! -d "$proj_dir" ]]; then
-        echo "Directory $proj_dir does not exist."
-        return 1
-    fi
-
-    cd "$proj_dir" || return 1
-
-    kitty --directory "$proj_dir" nix develop --command zsh -ic "alias run='python main.py'; exec zsh" &
-    
-    sleep 0.5
-    
-    hyprctl dispatch splitratio -0.5
-
-    nix develop --command zsh -ic "edit; exec zsh"
 }
 
 fetch

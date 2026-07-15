@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+source "$(dirname "${BASH_SOURCE[0]}")/caching.sh"
+qs_ensure_cache "lock"
+
+quickshell -p ~/.config/quickshell/Lock.qml

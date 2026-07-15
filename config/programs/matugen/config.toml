@@ -59,7 +59,7 @@ output_path = "~/.config/qt6ct/qss/matugen-style.qss"
 
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/hyprland.conf.template'
-output_path = '~/.config/hypr/colors.conf'
+output_path = '~/.config/mango/conf.d/colors.conf'
 
 [templates.mango]
 input_path = '~/.config/matugen/templates/mango.conf.template'

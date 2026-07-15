@@ -114,7 +114,7 @@ replaced, or explicitly documented as intentionally dropped.
 | 4. Safe installation scripts | Complete |
 | 5. Native MangoWM configuration | Complete |
 | 6. Mango compositor service | Complete |
-| 7. QuickShell and portable scripts | Planned |
+| 7. QuickShell and portable scripts | Complete |
 | 8. Obsolete Nix and Hyprland removal | Planned |
 | 9. Final validation and maintenance docs | Planned |
 
