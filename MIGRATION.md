@@ -112,7 +112,7 @@ replaced, or explicitly documented as intentionally dropped.
 | 2. Mango-owned skeleton | Complete |
 | 3. Canonical package manifests | Complete |
 | 4. Safe installation scripts | Complete |
-| 5. Native MangoWM configuration | Planned |
+| 5. Native MangoWM configuration | Complete |
 | 6. Mango compositor service | Planned |
 | 7. QuickShell and portable scripts | Planned |
 | 8. Obsolete Nix and Hyprland removal | Planned |
