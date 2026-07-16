@@ -2,7 +2,6 @@
 # One package per line. Lines starting with # are comments.
 
 # Core compositor and session
-mango
 swayidle
 swaylock
 swww
@@ -77,7 +76,7 @@ ffmpeg
 # System utilities
 btop
 fastfetch
-killall
+psmisc
 inotify-tools
 power-profiles-daemon
 
