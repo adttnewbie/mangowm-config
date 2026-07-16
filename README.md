@@ -12,13 +12,7 @@ behavior is the source of truth.
 - Wayland session
 - An AUR helper (yay or paru)
 
-## Quick Install
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/adttnewbie/mangowm-config/master/install/install.sh)
-```
-
-Or clone and install manually:
+## Installation
 
 ```bash
 git clone https://github.com/adttnewbie/mangowm-config.git
