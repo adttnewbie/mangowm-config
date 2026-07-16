@@ -23,11 +23,47 @@ cd mangowm-config
 > [!WARNING]
 > DO NOT LAUNCH THIS AS ROOT!
 
+The default installation mode is **copy**, which copies all configuration files
+to `~/.config` so they are independent from this repository.
+
+Before installing, the installer scans `~/.config` and displays a summary of
+existing configurations. If user configurations are detected, an interactive
+menu lets you choose how to proceed.
+
+For development, use symlink mode:
+
+```bash
+./install/install.sh --symlink
+```
+
+Preview without modifying files:
+
+```bash
+./install/install.sh --dry-run
+```
+
+### CLI Options
+
+| Option | Description |
+| --- | --- |
+| `--copy` | Copy files (default, recommended for users) |
+| `--symlink` | Create symlinks (recommended for developers) |
+| `--force` | Overwrite automatically after backup |
+| `--skip-existing` | Leave existing user configurations untouched |
+| `--dry-run` | Simulate installation without modifying files |
+| `--restore` | Restore from the latest backup |
+| `--uninstall` | Remove installed configurations |
+| `--skip-pkg` | Skip package installation |
+| `--plymouth` | Install Plymouth theme |
+
+See [docs/installation.md](docs/installation.md) for full details.
+
 The installer will:
 1. Install required packages from official repos and AUR
-2. Create symlinks for configuration files
-3. Install fonts
-4. Optionally install Plymouth theme (with `--plymouth`)
+2. Detect existing configurations and show a summary
+3. Deploy configuration files (copy or symlink)
+4. Install fonts
+5. Optionally install Plymouth theme (with `--plymouth`)
 
 After installation, log out and select "Mango" from your display manager.
 
@@ -41,6 +77,7 @@ After installation, log out and select "Mango" from your display manager.
 
 ## Documentation
 
+- [Installation](docs/installation.md) — Installation modes, backup, and restore
 - [Architecture](docs/architecture.md) — Repository layout and ownership
 - [Packages](docs/packages.md) — Package lists and installation
 - [Migration](MIGRATION.md) — Migration status and behavior changes

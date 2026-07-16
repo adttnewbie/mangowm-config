@@ -20,6 +20,16 @@ quickshell/
 scripts/
   mango/                    Mango-owned command and IPC implementations
 install/                    independent Arch installation scripts
+  install.sh                  orchestrator with CLI and interactive safety
+  copy.sh                     copy installation mode
+  symlink.sh                  symlink installation mode
+  backup.sh                   shared detection, backup, reporting, and deploy
+  restore.sh                  restore from backups
+  uninstall.sh                remove installed configurations
+  packages.sh                 pacman and AUR package installation
+  fonts.sh                    font installation
+  themes.sh                   Plymouth theme installation
+  test-link.sh                integration tests for both modes and safety
 docs/                       user and maintainer documentation
 previews/                   upstream-owned screenshots
 ```
@@ -93,19 +103,44 @@ packages with `pacman` and AUR packages only through an available AUR helper.
 
 ## Installation flow
 
-Each installer is safe to run independently:
+The installer supports two deployment modes:
 
+- **Copy mode** (default): copies configuration files to `~/.config`, making
+  them independent from the repository. Recommended for end users.
+- **Symlink mode**: creates symbolic links to the repository. Recommended for
+  developers and contributors.
+
+`install/install.sh` orchestrates the full installation and accepts `--copy`,
+`--symlink`, `--force`, `--skip-existing`, `--dry-run`, `--restore`, and
+`--uninstall` flags. When no flag is provided, it defaults to `--copy`.
+
+The installer prioritizes protecting existing user configurations. Before
+installing, it scans all managed targets and classifies their state (not
+installed, already installed, existing user config, existing symlink, or
+modified). If existing configurations are detected, an interactive menu is
+presented. The `--force` flag bypasses the menu for scripted use; `--dry-run`
+simulates without modifying files.
+
+Each sub-script is safe to run independently:
+
+- `install/backup.sh` provides shared detection, backup, reporting, and deploy
+  functions used by all other scripts.
+- `install/copy.sh` deploys configuration by copying.
+- `install/symlink.sh` deploys configuration by symlinking.
 - `install/packages.sh` installs package manifests.
-- `install/link.sh` links configuration into standard XDG paths.
-- `install/fonts.sh` installs or links local fonts and refreshes fontconfig.
-- `install/themes.sh` installs or links theme assets, including the optional
-  system Plymouth theme.
-- `install/install.sh` calls the preceding scripts in that order.
+- `install/fonts.sh` installs local fonts and refreshes fontconfig.
+- `install/themes.sh` installs theme assets, including the optional Plymouth theme.
+- `install/restore.sh` restores configurations from backups.
+- `install/uninstall.sh` removes installed configurations.
+- `install/test-link.sh` runs integration tests for both modes, skip-existing,
+  and dry-run behavior.
 
-All scripts are idempotent. Before replacing an existing non-symlink target,
-`link.sh` creates a timestamped backup and refuses destructive overwrites on
-failure. Re-running the installer preserves a working link, refreshes changed
-links, and never removes user files without a backup.
+All scripts are idempotent. A manifest file tracks installation state for copy
+mode; symlink mode checks link targets directly. Before modifying any existing
+target, the installer creates a timestamped backup under
+`~/.config-backup/YYYYMMDD-HHMMSS/`. Re-running the installer detects an
+up-to-date installation and skips unnecessary work. User files are never
+removed without a backup and explicit confirmation.
 
 ## Update and upstream synchronization strategy
 
