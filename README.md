@@ -15,13 +15,13 @@ behavior is the source of truth.
 ## Quick Install
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/ilyamiro/mangowm-config/master/install/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/adttnewbie/mangowm-config/master/install/install.sh)
 ```
 
 Or clone and install manually:
 
 ```bash
-git clone https://github.com/ilyamiro/mangowm-config.git
+git clone https://github.com/adttnewbie/mangowm-config.git
 cd mangowm-config
 ./install/install.sh
 ```
