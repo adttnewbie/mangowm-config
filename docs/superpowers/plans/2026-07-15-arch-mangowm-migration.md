@@ -1,5 +1,8 @@
 # Arch Linux + MangoWM Migration Implementation Plan
 
+> **Status: Complete** — This plan has been fully executed. All tasks below are historical.
+> The canonical migration record is [`MIGRATION.md`](../../../MIGRATION.md).
+
 > For agentic workers: use superpowers:executing-plans task by task. Steps use checkboxes for tracking.
 
 **Goal:** Convert this repository into a standalone Arch Linux + MangoWM desktop configuration while retaining upstream-friendly reusable content.

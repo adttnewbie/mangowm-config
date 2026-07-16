@@ -6,6 +6,10 @@ pkgs/
 **/.env
 **/.env.*
 
+__pycache__/
+*.pyc
+*.pyo
+
 commit.txt
 config/programs/eww/hotfile-eww/*
 
