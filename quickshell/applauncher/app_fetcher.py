@@ -14,8 +14,6 @@ def fetch_apps():
         f'{home}/.local/share/applications',
         '/var/lib/flatpak/exports/share/applications',
         f'{home}/.local/share/flatpak/exports/share/applications',
-        f'{home}/.nix-profile/share/applications',
-        '/usr/share/applications'
     ]
     
     for d in dirs:

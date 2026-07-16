@@ -6,6 +6,7 @@ import QtQuick.Controls
 import Quickshell
 import Quickshell.Io
 import "../"
+import "../services/mango"
 
 Item {
     id: root
@@ -1053,7 +1054,7 @@ Item {
         }
         ScriptAction { 
             script: {
-                Quickshell.execDetached(["mmsg", "dispatch", "submap", "reset"]);
+                MangoService.dispatchSubmap("reset");
                 Quickshell.execDetached(["bash", Quickshell.env("HOME") + "/.local/share/mango/scripts/qs_manager.sh", "close"]);
             } 
         }    
@@ -2513,7 +2514,7 @@ Item {
                                         hoverEnabled: true; cursorShape: Qt.PointingHandCursor; acceptedButtons: Qt.LeftButton; enabled: !model.isEditing
                                         onClicked: {
                                             if (model.dispatcher.startsWith("exec")) { Quickshell.execDetached(["bash", "-c", model.command]); }
-                                            else { Quickshell.execDetached(["mmsg", "dispatch", model.dispatcher, model.command]); }
+                                            else { MangoService.dispatchCommand(model.dispatcher, model.command); }
                                         }
                                     }
                                 }
@@ -2605,8 +2606,8 @@ Item {
                                                 dynamicKeybindsModel.setProperty(outerIndex, "key", k);
                                             }
                                             onActiveFocusChanged: {
-                                                if (!activeFocus) { accumulatedMods = []; accumulatedKey = ""; Quickshell.execDetached(["mmsg", "dispatch", "submap", "reset"]); }
-                                                else { Quickshell.execDetached(["mmsg", "dispatch", "submap", "passthru"]); }
+                                                if (!activeFocus) { accumulatedMods = []; accumulatedKey = ""; MangoService.dispatchSubmap("reset"); }
+                                                else { MangoService.dispatchSubmap("passthru"); }
                                             }
                                         }
                                     }

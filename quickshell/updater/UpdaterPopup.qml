@@ -84,7 +84,7 @@ Item {
     // =========================================================================
     Timer {
         id: bootSequence
-        interval: 250 // Give Hyprland a quarter-second to map the window
+        interval: 250
         running: true
         onTriggered: {
             window._init = true;

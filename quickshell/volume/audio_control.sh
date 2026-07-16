@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
+set -eu
 
-ACTION=$1
-TYPE=$2
-ID=$3
-VAL=$4
+ACTION=${1:-}
+TYPE=${2:-}
+ID=${3:-}
+VAL=${4:-}
 
-case $ACTION in
+case "$TYPE" in
+    sink|source) ;;
+    *) printf 'invalid type: %s\n' "$TYPE" >&2; exit 64 ;;
+esac
+
+case "$ACTION" in
     set-volume)
-        # Intercept master slider to use wpctl
         if [[ "$ID" == "@DEFAULT@" ]]; then
             if [[ "$TYPE" == "sink" ]]; then
                 wpctl set-volume @DEFAULT_AUDIO_SINK@ "$VAL%"
@@ -15,8 +20,7 @@ case $ACTION in
                 wpctl set-volume @DEFAULT_AUDIO_SOURCE@ "$VAL%"
             fi
         else
-            # Background specific sliders still use pactl
-            pactl set-$TYPE-volume "$ID" "$VAL%"
+            pactl "set-${TYPE}-volume" "$ID" "$VAL%"
         fi
         ;;
     toggle-mute)
@@ -27,11 +31,10 @@ case $ACTION in
                 wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
             fi
         else
-            pactl set-$TYPE-mute "$ID" toggle
+            pactl "set-${TYPE}-mute" "$ID" toggle
         fi
         ;;
     set-default)
-        # pactl is still preferred for setting defaults by name
-        pactl set-default-$TYPE "$ID"
+        pactl "set-default-${TYPE}" "$ID"
         ;;
 esac

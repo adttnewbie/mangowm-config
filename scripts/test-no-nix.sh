@@ -23,7 +23,9 @@ check_no_nix_pattern() {
 
 check_no_nix_pattern 'home-manager|nixos|nixpkgs' 'no NixOS references'
 check_no_nix_pattern '/nix/store|/run/current-system|/etc/nixos' 'no Nix paths'
-check_no_nix_pattern 'nix develop|nixos-rebuild' 'no Nix commands'
+check_no_nix_pattern 'nix develop|nixos-rebuild|nix-shell' 'no Nix commands'
+check_no_nix_pattern '@out@|\.nix-profile' 'no Nix placeholders'
+check_no_nix_pattern 'hyprlock|hyprland\.org' 'no Hyprland references'
 
 if [ "$failures" -gt 0 ]; then
   printf '\n%d test(s) failed\n' "$failures"

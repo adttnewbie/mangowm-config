@@ -182,17 +182,12 @@ def listen_mango_ipc():
         try:
             time.sleep(1)
             cls, title = get_active_window_mmsg()
-            if cls != current_app_class or title != current_app_title:
+            if is_locked() or cls == "swaylock":
+                current_app_class, current_app_title = "Locked", "Locked"
+            elif cls != current_app_class or title != current_app_title:
                 current_app_class, current_app_title = cls, title
         except Exception:
-            time.sleep(1)
-                        cls, clean_title = get_active_window_mmsg()
-                        if is_locked() or cls == "hyprlock":
-                            current_app_class, current_app_title = "Locked", "Locked"
-                        else:
-                            current_app_class, current_app_title = cls, clean_title
-        except Exception:
-            time.sleep(2) 
+            time.sleep(2)
 
 
 class DaemonTracker:

@@ -26,7 +26,22 @@ case "$action" in
     exec "$SCRIPT_DIR/tags.sh" list
     ;;
   monitors)
-    exec "$SCRIPT_DIR/monitors.sh"
+    exec mmsg get monitors
+    ;;
+  monitor-rule)
+    exec mmsg dispatch monitorrule "$1"
+    ;;
+  batch)
+    exec mmsg dispatch batch "$1"
+    ;;
+  submap)
+    exec mmsg dispatch submap "$1"
+    ;;
+  spawn)
+    exec mmsg dispatch spawn "$1"
+    ;;
+  dispatch)
+    exec mmsg dispatch "$1" "$2"
     ;;
   keyboard-layout)
     exec "$SCRIPT_DIR/keyboard.sh" get
@@ -42,7 +57,7 @@ case "$action" in
     ;;
   *)
     printf 'unknown action: %s\n' "$action" >&2
-    printf 'usage: ipc.sh {view-tag|move-to-tag|tags|monitors|keyboard-layout|switch-keyboard-layout|reload|quit} [arg]\n' >&2
+    printf 'usage: ipc.sh {view-tag|move-to-tag|tags|monitors|monitor-rule|batch|submap|spawn|dispatch|keyboard-layout|switch-keyboard-layout|reload|quit} [arg]\n' >&2
     exit 64
     ;;
 esac

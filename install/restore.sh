@@ -45,7 +45,10 @@ restore_backup() {
     local target="$HOME/$rel_path"
 
     if [ -e "$target" ] || [ -L "$target" ]; then
-      rm -rf "$target"
+      case "$target" in
+        "$HOME"/*) rm -rf "$target" ;;
+        *) printf 'ERROR: refusing to remove path outside HOME: %s\n' "$target" >&2; continue ;;
+      esac
     fi
 
     mkdir -p "$(dirname "$target")"

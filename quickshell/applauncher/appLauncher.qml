@@ -6,6 +6,7 @@ import QtQuick.Controls
 import Quickshell
 import Quickshell.Io
 import "../"
+import "../services/mango"
 
 Item {
     id: window
@@ -146,7 +147,7 @@ Item {
     }
 
     function launchApp(execStr) {
-        Quickshell.execDetached(["bash", "-c", "mmsg dispatch spawn " + execStr]);
+        MangoService.dispatchSpawn(execStr);
         Quickshell.execDetached(["bash", Quickshell.env("HOME") + "/.local/share/mango/scripts/qs_manager.sh", "close"]);
     }
 

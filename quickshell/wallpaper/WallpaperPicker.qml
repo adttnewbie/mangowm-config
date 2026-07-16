@@ -6,7 +6,8 @@ import Qt.labs.folderlistmodel
 import QtMultimedia
 import Quickshell
 import Quickshell.Io
-import "../" 
+import "../"
+import "../services/mango"
 
 Item {
     id: window
@@ -86,7 +87,7 @@ Item {
 
     Process {
         id: monitorProc
-        command: ["sh", "-c", "export PATH=$PATH:/usr/bin:/usr/local/bin: && mmsg get monitors"]
+        command: MangoService.monitorsCommand()
         running: false
         
         stdout: StdioCollector {

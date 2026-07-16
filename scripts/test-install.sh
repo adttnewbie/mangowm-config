@@ -15,7 +15,7 @@ export XDG_CACHE_HOME="$TEMP_HOME/.cache"
 mkdir -p "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME"
 
 printf 'Creating symlinks...\n'
-bash "$REPO_ROOT/install/link.sh" >/dev/null 2>&1
+bash "$REPO_ROOT/install/symlink.sh" >/dev/null 2>&1
 
 printf 'Checking for broken symlinks...\n'
 broken=$(find "$XDG_CONFIG_HOME" -xtype l 2>/dev/null || true)

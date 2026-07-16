@@ -39,17 +39,16 @@ The following files are otherwise reusable but contain Nix-specific values and
 need targeted edits:
 
 - `README.md` — current NixOS-oriented installation guidance.
-- `config/programs/plymouth/simple/simple.plymouth` — `@out@` store-path
-  substitution.
 - `config/programs/zsh/zsh-init.sh` — NixOS aliases, `nix develop`, and a
   NixOS Fastfetch logo.
 - `config/sessions/hyprland/config/env.conf` — `NIXOS_OZONE_WL`.
-- `config/sessions/hyprland/scripts/quickshell/applauncher/app_fetcher.py` —
-  `/run/current-system` application path.
-- `config/sessions/hyprland/scripts/quickshell/calendar/schedule/schedule_manager.sh`
-  — Nix development shell launcher.
-- `config/sessions/hyprland/scripts/quickshell/wallpaper/WallpaperPicker.qml`
-  — `/run/current-system` executable path.
+
+The following files have been cleaned of Nix-specific values:
+
+- `config/programs/plymouth/simple/simple.plymouth` — `@out@` replaced with `/usr`.
+- `quickshell/applauncher/app_fetcher.py` — `~/.nix-profile` removed from search paths.
+- `quickshell/calendar/schedule/schedule_manager.sh` — `nix-shell` replaced with direct `python3` call.
+- `quickshell/wallpaper/WallpaperPicker.qml` — direct `mmsg` replaced with service call.
 
 ### Reusable components
 
@@ -94,14 +93,14 @@ replaced, or explicitly documented as intentionally dropped.
 
 | Previous behavior | Arch + MangoWM behavior | Status |
 | --- | --- | --- |
-| NixOS and Home Manager deploy configuration | `install/` links standard XDG paths on Arch | Planned |
+| NixOS and Home Manager deploy configuration | `install/` links standard XDG paths on Arch | Complete |
 | Hyprland workspaces `1`–`10` | MangoWM tags `1`–`9` | Approved |
-| `hyprctl` and Hyprland socket | `mmsg` and MangoWM tag/monitor state | Planned |
-| Hyprland config reload | MangoWM `reload_config` | Planned |
-| Hyprland monitor keyword updates | Mango `monitorrule`; runtime output changes via `wlr-randr` | Planned |
+| `hyprctl` and Hyprland socket | `mmsg` and MangoWM tag/monitor state | Complete |
+| Hyprland config reload | MangoWM `reload_config` | Complete |
+| Hyprland monitor keyword updates | Mango `monitorrule`; runtime output changes via `wlr-randr` | Complete |
 | `hypridle` | `swayidle` driving the existing QuickShell lock UI | Planned |
-| Nix store and `/run/current-system` lookup | standard XDG directories and normal Arch `PATH` lookup | Planned |
-| Nix-based `stsetup` project helper | removed; it depends on a project-specific Nix shell | Planned |
+| Nix store and `/run/current-system` lookup | standard XDG directories and normal Arch `PATH` lookup | Complete |
+| Nix-based `stsetup` project helper | removed; it depends on a project-specific Nix shell | Complete |
 | NixOS Fastfetch logo | Arch Linux logo | Planned |
 
 ## Implementation status
@@ -222,3 +221,37 @@ This validates:
 4. Resolve conflicts in Mango-owned paths only
 5. Run `bash scripts/test-install.sh` after resolving
 6. Document behavior changes in this file
+
+## Production audit (1.0 stabilization)
+
+The following issues were identified and resolved during the production audit:
+
+### Critical fixes
+- Removed `nix-shell` invocation from `schedule_manager.sh`; replaced with direct `python3` call
+- Fixed `$HOME` string literal bug in `get_schedule.py`; now uses `os.path.expanduser()`
+- Replaced `@out@` Nix store placeholder in Plymouth theme with `/usr`
+- Removed `~/.nix-profile` from application search paths in `app_fetcher.py`
+
+### Hyprland assumption fixes
+- Replaced user-facing "Hyprland" text in GuidePopup with "MangoWM"
+- Fixed `hyprlock` reference in `focus_daemon.py`; now checks `swaylock`
+- Renamed misleading `hyprDir` and `fullHyprCmd` variables to Mango-appropriate names
+- Removed dead/unreachable code with incorrect indentation in focus daemon
+
+### IPC boundary enforcement
+- Moved all 16 direct `mmsg` calls from QuickShell components into `services/mango/` layer
+- Extended `ipc.sh` with `monitor-rule`, `batch`, `submap`, `spawn`, and `dispatch` actions
+- Extended `MangoService.qml` with typed methods for all IPC operations
+- Made `MangoService` a singleton for shared access across components
+
+### Script hardening
+- Added input validation for `$TYPE` in `audio_control.sh` (command injection fix)
+- Added root guard to `install.sh`
+- Added confirmation prompt to `uninstall.sh`
+- Added `safe_remove` path validation in `backup.sh` (refuses paths outside `$HOME`)
+- Added path sanity checks to `restore.sh` and `uninstall.sh`
+- Added `set -eu` to `schedule_manager.sh`
+
+### Test repairs
+- Fixed broken `link.sh` reference in `test-install.sh` (renamed to `symlink.sh`)
+- Expanded `test-no-nix.sh` patterns to catch `nix-shell`, `@out@`, `~/.nix-profile`, `hyprlock`, and `hyprland.org`

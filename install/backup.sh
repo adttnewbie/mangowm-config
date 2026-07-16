@@ -6,6 +6,15 @@ XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 BACKUP_BASE="${XDG_CONFIG_HOME}-backup"
 MANIFEST_FILE="$XDG_DATA_HOME/mango/.install-manifest"
 
+safe_remove() {
+  local path=$1
+  case "$path" in
+    "$HOME"/*) ;;
+    *) printf 'ERROR: refusing to remove path outside HOME: %s\n' "$path" >&2; return 1 ;;
+  esac
+  rm -rf "$path"
+}
+
 generate_checksum() {
   local path=$1
   if [ -d "$path" ]; then
@@ -411,7 +420,7 @@ deploy_copy() {
   mkdir -p "$(dirname "$target")"
 
   if [ -e "$target" ] || [ -L "$target" ]; then
-    rm -rf "$target"
+    safe_remove "$target"
   fi
 
   cp -a "$source" "$target"
@@ -431,7 +440,7 @@ deploy_symlink() {
   mkdir -p "$(dirname "$target")"
 
   if [ -e "$target" ] || [ -L "$target" ]; then
-    rm -rf "$target"
+    safe_remove "$target"
   fi
 
   ln -s "$source" "$target"

@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -eu
 
+if [ "$(id -u)" -eq 0 ]; then
+  printf 'ERROR: do not run the installer as root\n' >&2
+  exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 source "$SCRIPT_DIR/backup.sh"

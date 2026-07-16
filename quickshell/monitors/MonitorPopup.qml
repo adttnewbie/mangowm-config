@@ -4,6 +4,7 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
 import "../"
+import "../services/mango"
 
 Item {
     id: window
@@ -318,7 +319,7 @@ Item {
     // -------------------------------------------------------------------------
     Process {
         id: displayPoller
-        command: ["mmsg", "get", "monitors"]
+        command: MangoService.monitorsCommand()
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
@@ -389,7 +390,8 @@ Item {
             let postReloadCmd = "swww kill ; sleep 0.2 ; swww-daemon &";
 
             Quickshell.execDetached(["notify-send", "Display Update", "Applied & Saved: " + m.resW + "x" + m.resH + " @ " + m.rate + "Hz"]);
-            Quickshell.execDetached(["sh", "-c", "mmsg dispatch monitorrule " + monitorStr + " ; " + jsonCmd + " ; " + postReloadCmd]);
+            MangoService.dispatchMonitorRule(monitorStr);
+            Quickshell.execDetached(["sh", "-c", jsonCmd + " ; " + postReloadCmd]);
             
             window.debugLog("Executed single monitor apply.");
         } else {
@@ -481,15 +483,15 @@ Item {
                 });
             }
             
-            let fullHyprCmd = "mmsg dispatch batch '" + batchCmds.join(" ; ") + "'";
+            MangoService.dispatchBatch(batchCmds.join(" ; "));
             let safeJson = JSON.stringify(jsonMonitorsArray).replace(/'/g, "'\\''");
             let jsonCmd = "jq '.monitors = " + safeJson + "' ~/.config/mango/settings.json > ~/.config/mango/settings.json.tmp && mv ~/.config/mango/settings.json.tmp ~/.config/mango/settings.json";
             let postReloadCmd = "swww kill ; sleep 0.2 ; swww-daemon &";
 
-            Quickshell.execDetached(["sh", "-c", fullHyprCmd + " ; " + jsonCmd + " ; " + postReloadCmd]);
+            Quickshell.execDetached(["sh", "-c", jsonCmd + " ; " + postReloadCmd]);
             Quickshell.execDetached(["notify-send", "Display Update", "Applied & Saved layout for: " + summaryString]);
             
-            window.debugLog("Executed multi monitor apply: " + fullHyprCmd);
+            window.debugLog("Executed multi monitor apply");
         }
     }
 

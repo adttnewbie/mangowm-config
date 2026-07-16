@@ -2,6 +2,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import "services/mango"
 
 Item {
     id: config
@@ -12,11 +13,11 @@ Item {
     // Core Paths & Environment
     // =========================================================================
     readonly property string homeDir: Quickshell.env("HOME")
-    readonly property string hyprDir: homeDir + "/.config/mango"
-    readonly property string qsScriptsDir: hyprDir + "/scripts/quickshell"
+    readonly property string mangoDir: homeDir + "/.config/mango"
+    readonly property string qsScriptsDir: mangoDir + "/scripts/quickshell"
     readonly property string cacheDir: paths.cacheDir
     
-    readonly property string settingsJsonPath: hyprDir + "/settings.json"
+    readonly property string settingsJsonPath: mangoDir + "/settings.json"
     readonly property string weatherEnvPath: qsScriptsDir + "/calendar/.env"
 
     // State Tracking
@@ -227,7 +228,8 @@ Item {
             if (m.transform !== 0) monitorStr += ",transform," + m.transform;
             let jsonArr = [{ name: m.name, resW: m.resW, resH: m.resH, rate: parseInt(m.rate), x: 0, y: 0, scale: m.sysScale, transform: m.transform }];
             config.setSetting("monitors", jsonArr);
-            config.sh("mmsg dispatch monitorrule " + monitorStr + " ; swww kill ; sleep 0.2 ; swww-daemon &");
+            MangoService.dispatchMonitorRule(monitorStr);
+            config.sh("swww kill ; sleep 0.2 ; swww-daemon &");
             Quickshell.execDetached(["notify-send", "Display Update", "Applied: " + m.resW + "x" + m.resH + " @ " + m.rate + "Hz"]);
         } else {
             let rects = [];
@@ -277,7 +279,8 @@ Item {
                 jsonArr.push({ name: r.name, resW: r.resW, resH: r.resH, rate: parseInt(r.rate), x: r.x, y: r.y, scale: r.sysScale, transform: r.transform });
             }
             config.setSetting("monitors", jsonArr);
-            config.sh("mmsg dispatch batch '" + batchCmds.join(" ; ") + "' ; swww kill ; sleep 0.2 ; swww-daemon &");
+            MangoService.dispatchBatch(batchCmds.join(" ; "));
+            config.sh("swww kill ; sleep 0.2 ; swww-daemon &");
             Quickshell.execDetached(["notify-send", "Display Update", "Applied layout for: " + summaryString.trim()]);
         }
     }
@@ -292,7 +295,7 @@ Item {
     property alias displayPoller: _displayPoller
     Process {
         id: _displayPoller
-        command: ["mmsg", "get", "monitors"]
+        command: MangoService.monitorsCommand()
         running: false
         stdout: StdioCollector {
             onStreamFinished: {
