@@ -83,6 +83,3 @@ power-profiles-daemon
 # Python (for scripts)
 python
 python-pip
-
-# Color generation
-matugen

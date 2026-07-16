@@ -8,6 +8,9 @@ mangowm-git
 # QuickShell (git version)
 quickshell-git
 
+# Color generation
+matugen-bin
+
 # Additional themes and cursors
 whitesur-cursor-theme-git
 adw-gtk3
